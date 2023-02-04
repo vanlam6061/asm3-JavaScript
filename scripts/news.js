@@ -1,8 +1,8 @@
 "use strict";
-const apiKeys = "4aeb63983e194023a4e694205173d98d";
-const news = async function (country, category, pageSize, page, apiKey) {
+
+const news = async function (country, category, pageSize, page, key) {
   const res = await fetch(
-    `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=${pageSize}&page=${page}apiKey=${apiKeys}`
+    `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=${pageSize}&page=${page}apiKey=${key}`
   );
 
   const data = await res.json();
@@ -15,7 +15,13 @@ const news = async function (country, category, pageSize, page, apiKey) {
     console.error(err);
   }
 };
-news(apiKeys);
+const con = "un";
+const cata = "";
+const size = 50;
+const pages = 5;
+const apiKeys = "4aeb63983e194023a4e694205173d98d";
+// gọi hàm news
+news(con, cata, size, pages, apiKeys);
 
 //const render articles
 const renderNew = function () {
