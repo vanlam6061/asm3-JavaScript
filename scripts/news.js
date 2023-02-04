@@ -1,8 +1,8 @@
 "use strict";
 const apiKeys = "4aeb63983e194023a4e694205173d98d";
-const news = async function (keys) {
+const news = async function (country, category, pageSize, page, apiKey) {
   const res = await fetch(
-    `https://newsapi.org/v2/everything?q=tesla&from=2022-12-16&sortBy=publishedAt&apiKey=${keys}`
+    `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=${pageSize}&page=${page}apiKey=${apiKeys}`
   );
 
   const data = await res.json();
