@@ -1,42 +1,16 @@
 "use strict";
 
-const news = async function (key) {
-  //country, category, pageSize, page,
-  let totalPages = 0;
-  let arts;
-  let totalResults = 0;
-  const res = await fetch(
-    `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=${key}`
-  );
+const KEY2 = "CR-USER";
+const currentUser = JSON.parse(getFromStorage(KEY2));
 
-  const data = await res.json();
-  console.log(data);
-  arts = await data.articles;
-  totalPages = data.totalResults;
-  console.log(arts);
-  console.log(totalPages);
-  totalResults = arts.length;
-  try {
-  } catch (err) {
-    console.error(err);
-  }
-};
+//
 const previousButton = document.querySelector("#btn-prev");
 const nextButton = document.querySelector("#btn-next");
 const newsContainer = document.querySelector("#news-container");
-const con = "un";
-const cata = "";
-const size = 50;
-const pages = 5;
-const apiKeys = "4aeb63983e194023a4e694205173d98d";
-// gọi hàm news
+const numberPage = document.querySelector("#page-num");
 
-let currentPage = 1;
-let numberNewsPerPage = 5;
+////////////////////////////////
 
-//con, cata, size, pages,
-
-//const render articles
 const updatePage = function (numberNews) {
   news(apiKeys);
   console.log(arts);
@@ -68,21 +42,85 @@ const updatePage = function (numberNews) {
   }
   newsContainer.innerHTML = html;
 };
+////
+
+function prevnextDisplay(prevBtn, nextBtn, maxPage) {
+  //Điều chỉnh nút previous và nút next
+  if (curPage == 1) {
+    //Nếu trang hiện tại là 1
+    prevBtn.classList.add("toast"); //Ẩn nút previous đi
+    prevBtn.classList.add("disabled"); //Hủy luôn cả hiệu ứng khi rê chuột vào
+  }
+  if (curPage == maxPage) {
+    //Nếu trang hiện tại là lớn nhất
+    nextBtn.classList.add("toast"); //Ẩn nút next đi
+    nextBtn.classList.add("disabled"); //Hủy luôn cả hiệu ứng khi rê chuột vào
+  }
+  if (curPage > 1 && curPage < maxPage) {
+    //Nếu trang hiện tại nằm giữa 1 và lớn nhất  thì hiện cả 2 nút previous và next lên cũng như khôi hiệu ứng cho chúng
+    nextBtn.classList.remove("toast");
+    nextBtn.classList.remove("disabled");
+    prevBtn.classList.remove("disabled");
+    prevBtn.classList.remove("toast");
+  }
+}
+
+const news = async function (key) {
+  //country, category, pageSize, page,
+  try {
+    let totalPages = 0;
+    let arts = [];
+    let totalResults = 0;
+    const res = await fetch(
+      `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=${key}`
+    );
+
+    const data = await res.json();
+    console.log(data);
+    arts = await data.articles;
+    totalPages = data.totalResults;
+    console.log(arts);
+    console.log(totalPages);
+    updatePage(numberNewsPerPage);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const con = "un";
+const cata = "";
+const size = 50;
+const pages = 5;
+const apiKeys = "4aeb63983e194023a4e694205173d98d";
+// gọi hàm news
+
+let currentPage = 1;
+let numberNewsPerPage = 5;
+
+//con, cata, size, pages,
 
 previousButton.addEventListener("click", function () {
   if (currentPage > 1) {
     currentPage--;
-    updatePage(numberNewsPerPage);
+    news(apiKeys);
   }
 });
 
 nextButton.addEventListener("click", function () {
   if (currentPage * numberNewsPerPage < 20) {
     currentPage++;
-    updatePage(numberNewsPerPage);
+    news(apiKeys);
   }
 });
 
+const paginate = (data) => {
+  const itemsPerPage = 5;
+  const numberOffPages = Math.ceil(numberNewsPerPage / itemsPerPage);
+  const paginatedData = Array.from({ length: numberOffPages }, (...index) => {
+    const start = index * itemsPerPage;
+    return data.slice(start, start + itemsPerPage);
+  });
+};
 // tối cần làm cái gì đây nhỉ:
 
 /* 
