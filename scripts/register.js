@@ -8,7 +8,7 @@ class User {
   }
 }
 
-const KEY = "USER_ARRAY";
+const KEY = "USER_REGISTER";
 const userArr = JSON.parse(getFromStorage(KEY)) || [];
 
 const inputFirstName = document.getElementById("input-firstname");
@@ -18,7 +18,7 @@ const inputPassword = document.getElementById("input-password");
 const inputPasswordConfirm = document.getElementById("input-password-confirm");
 const submitBtn = document.getElementById("btn-submit");
 submitBtn.addEventListener("click", () => {
-  const userData = {
+  const data = {
     firstName: inputFirstNames.value,
     lastName: inputLastNames.value,
     username: inputUsername.value,
@@ -68,9 +68,9 @@ submitBtn.addEventListener("click", () => {
 });
 function parseUser(userData) {
   const user = new User(
-    userData.firstname,
-    userData.lastname,
-    userData.username,
+    userData.firstName,
+    userData.lastName,
+    userData.userName,
     userData.password
   );
 
