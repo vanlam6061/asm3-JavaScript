@@ -1,58 +1,62 @@
 "use strict";
 
-const KEY2 = "CR-USER";
-const currentUser = JSON.parse(getFromStorage(KEY2));
+const KEY = "USER_SETTING";
+const settingUser = JSON.parse(getFromStorage(KEY));
 
 //
-const previousButton = document.querySelector("#btn-prev");
-const nextButton = document.querySelector("#btn-next");
+const previousBtn = document.querySelector("#btn-prev");
+const nextBtn = document.querySelector("#btn-next");
 const newsContainer = document.querySelector("#news-container");
 const numberPage = document.querySelector("#page-num");
+let newss = [];
 
 ////////////////////////////////
 
-const news = async function (country, category, pageSize, page) {
-  try {
-    let totalPages = 0;
-    let arts = [];
-    const res = await fetch(
-      `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=4aeb63983e194023a4e694205173d98d`
-    );
+const news = async function (country, category, pageSize, currentPage) {
+  // try {
+  const res = await fetch(
+    `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=${pageSize}&page=${currentPage}&apiKey=4aeb63983e194023a4e694205173d98d`
+  );
 
-    const data = await res.json();
-    console.log(data);
-    arts = await data.articles;
-    totalPages = data.totalResults;
-    console.log(arts);
-    console.log(totalPages);
-    // updatePage(numberNewsPerPage);
-  } catch (err) {
-    console.error(err);
-  }
-};
-news("us", "business", 20, 4);
-
-const updatePage = function (numberNews) {
-  news(apiKeys);
+  const data = await res.json();
+  console.log(data);
+  let arts = data.articles;
+  let totalPages = data.totalResults;
   console.log(arts);
-  let startNews = numberNews * (currentPage - 1);
-  let endNews = numberNews * currentPage;
+  console.log(totalPages);
+  let maxPage;
+  if (totalPages >= 100) {
+    maxPage = 100 / pageSize;
+  } else {
+    maxPage = totalPages / pageSize;
+  }
+  //children function
+  console.log(arts);
+  renderPage();
+  paginatedVisual();
+  // } catch (error) {
+  //   console.error(error);
+  // }
+};
+
+const renderPage = function () {
   let html = ``;
-  for (let i = startNews; i < endNews; i++) {
+  // console.log(arts);
+  newss.map((art) => {
     html += `
             <div class="card flex-row flex-wrap">
             <div class="card mb-3" style="">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        <img src="${arts[i].urlToImage}"
+                        <img src="${art.urlToImage}"
                             class="card-img"
                             alt="">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">${arts[i].title}</h5>
-                            <p class="card-text">${arts[i].content}</p>
-                            <a href="${arts[i].url}"
+                            <h5 class="card-title">${art.title}</h5>
+                            <p class="card-text">${art.content}</p>
+                            <a href="${art.url}"
                             class="btn btn-primary">View</a>
                         </div>
                     </div>
@@ -60,90 +64,40 @@ const updatePage = function (numberNews) {
             </div>
         </div>
             `;
-  }
+  });
   newsContainer.innerHTML = html;
 };
-// ////
 
-// function prevnextDisplay(prevBtn, nextBtn, maxPage) {
-//   //Điều chỉnh nút previous và nút next
-//   if (curPage == 1) {
-//     //Nếu trang hiện tại là 1
-//     prevBtn.classList.add("toast"); //Ẩn nút previous đi
-//     prevBtn.classList.add("disabled"); //Hủy luôn cả hiệu ứng khi rê chuột vào
-//   }
-//   if (curPage == maxPage) {
-//     //Nếu trang hiện tại là lớn nhất
-//     nextBtn.classList.add("toast"); //Ẩn nút next đi
-//     nextBtn.classList.add("disabled"); //Hủy luôn cả hiệu ứng khi rê chuột vào
-//   }
-//   if (curPage > 1 && curPage < maxPage) {
-//     //Nếu trang hiện tại nằm giữa 1 và lớn nhất  thì hiện cả 2 nút previous và next lên cũng như khôi hiệu ứng cho chúng
-//     nextBtn.classList.remove("toast");
-//     nextBtn.classList.remove("disabled");
-//     prevBtn.classList.remove("disabled");
-//     prevBtn.classList.remove("toast");
-//   }
-// }
+//1.  pagination Pages
 
-// const con = "un";
-// const cata = "";
-// const size = 50;
-// const pages = 5;
-// // gọi hàm news
-
-// let currentPage = 1;
-// let numberNewsPerPage = 5;
-
-// //con, cata, size, pages,
-
-// previousButton.addEventListener("click", function () {
-//   if (currentPage > 1) {
-//     currentPage--;
-//     news(apiKeys);
-//   }
-// });
-
-// nextButton.addEventListener("click", function () {
-//   if (currentPage * numberNewsPerPage < 20) {
-//     currentPage++;
-//     news(apiKeys);
-//   }
-// });
-
-// const paginate = (data) => {
-//   const itemsPerPage = 5;
-//   const numberOffPages = Math.ceil(numberNewsPerPage / itemsPerPage);
-//   const paginatedData = Array.from({ length: numberOffPages }, (...index) => {
-//     const start = index * itemsPerPage;
-//     return data.slice(start, start + itemsPerPage);
-//   });
-// };
-// // tối cần làm cái gì đây nhỉ:
-
-// /*
-//    đầu tiên tôi cần tạo tham số newsInPage,để quy định số news sẽ hiển thị trên một trang,
-//    - sau sẽ truyền giá trị đầu và giá trị đầu và giá trị cuối vào hàm render
-
-//   */
-// // Update the value of the "page" parameter for the API call
-// // ...
-
-// // Fetch the data for the new page
-// // ...
-
-// // Update the UI with the new data
-// // ...
-
-// // Show or hide the "Previous" and "Next" buttons based on the current page and total results
-// // if (currentPage === 1) {
-// //   previousButton.style.display = "none";
-// // } else {
-// //   previousButton.style.display = "block";
-// // }
-
-// // if (currentPage * pageSize >= totalResults) {
-// //   nextButton.style.display = "none";
-// // } else {
-// //   nextButton.style.display = "block";
-// // }
+function paginatedVisual(previousBtn, nextBtn, maxPage) {
+  if (currentPage == 1) {
+    previousBtn.classList.add("toast");
+    previousBtn.classList.add("disabled");
+  }
+  if (currentPage == maxPage) {
+    nextBtn.classList.add("toast");
+    nextBtn.classList.add("disabled");
+  }
+  if (currentPage > 1 && currentPage < maxPage) {
+    nextBtn.classList.remove("toast");
+    nextBtn.classList.remove("disabled");
+    previousBtn.classList.remove("disabled");
+    previousBtn.classList.remove("toast");
+  }
+}
+//default pages
+let currentPage = 1;
+news("us", settingUser[1].category, settingUser[1].pageSize, currentPage);
+// Next button
+nextBtn.addEventListener("click", () => {
+  currentPage += 1;
+  news("us", settingUser[1].category, settingUser[1].pageSize, currentPage);
+  numberPage.text = currentPage;
+});
+// Previous button
+previousBtn.addEventListener("click", () => {
+  currentPage -= 1;
+  news("us", settingUser[1].category, settingUser[1].pageSize, currentPage);
+  numberPage.text = currentPage;
+});
