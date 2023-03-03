@@ -8,10 +8,10 @@ const previousBtn = document.querySelector("#btn-prev");
 const nextBtn = document.querySelector("#btn-next");
 const newsContainer = document.querySelector("#news-container");
 const numberPage = document.querySelector("#page-num");
-let newss = [];
+let articles = [];
+let maxPage;
 
 ////////////////////////////////
-
 const news = async function (country, category, pageSize, currentPage) {
   // try {
   const res = await fetch(
@@ -20,29 +20,28 @@ const news = async function (country, category, pageSize, currentPage) {
 
   const data = await res.json();
   console.log(data);
-  let arts = data.articles;
+  articles = data.articles;
   let totalPages = data.totalResults;
-  console.log(arts);
   console.log(totalPages);
-  let maxPage;
   if (totalPages >= 100) {
     maxPage = 100 / pageSize;
   } else {
     maxPage = totalPages / pageSize;
   }
   //children function
-  console.log(arts);
+  console.log(articles);
+  paginatedVisual(previousBtn, nextBtn, maxPage);
   renderPage();
-  paginatedVisual();
-  // } catch (error) {
-  //   console.error(error);
-  // }
 };
+// catch (error) {
+//     console.error(error);
+//   }
+// };
 
 const renderPage = function () {
   let html = ``;
   // console.log(arts);
-  newss.map((art) => {
+  articles.map((art) => {
     html += `
             <div class="card flex-row flex-wrap">
             <div class="card mb-3" style="">
@@ -71,33 +70,35 @@ const renderPage = function () {
 //1.  pagination Pages
 
 function paginatedVisual(previousBtn, nextBtn, maxPage) {
-  if (currentPage == 1) {
+  if (currentPage <= 1) {
     previousBtn.classList.add("toast");
     previousBtn.classList.add("disabled");
-  }
-  if (currentPage == maxPage) {
-    nextBtn.classList.add("toast");
-    nextBtn.classList.add("disabled");
-  }
-  if (currentPage > 1 && currentPage < maxPage) {
+  } else if (currentPage > 1 && currentPage < maxPage) {
     nextBtn.classList.remove("toast");
     nextBtn.classList.remove("disabled");
     previousBtn.classList.remove("disabled");
     previousBtn.classList.remove("toast");
+  } else {
+    nextBtn.classList.add("toast");
+    nextBtn.classList.add("disabled");
   }
 }
 //default pages
 let currentPage = 1;
-news("us", settingUser[1].category, settingUser[1].pageSize, currentPage);
+news("us", settingUser[0].category, settingUser[0].pageSize, currentPage);
 // Next button
 nextBtn.addEventListener("click", () => {
-  currentPage += 1;
-  news("us", settingUser[1].category, settingUser[1].pageSize, currentPage);
-  numberPage.text = currentPage;
+  if (currentPage < maxPage) {
+    currentPage += 1;
+    news("us", settingUser[0].category, settingUser[0].pageSize, currentPage);
+    numberPage.text = currentPage;
+  }
 });
 // Previous button
 previousBtn.addEventListener("click", () => {
-  currentPage -= 1;
-  news("us", settingUser[1].category, settingUser[1].pageSize, currentPage);
-  numberPage.text = currentPage;
+  if (currentPage > 1) {
+    currentPage -= 1;
+    news("us", settingUser[0].category, settingUser[0].pageSize, currentPage);
+    numberPage.text = currentPage;
+  }
 });

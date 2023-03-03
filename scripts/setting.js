@@ -1,6 +1,6 @@
 "use strict";
 const KEY = "USER_SETTING";
-const settingArr = JSON.parse(getFromStorage(KEY)) || [];
+let settingArr = JSON.parse(getFromStorage(KEY)) || [];
 //get DOM element
 const inputPageSize = document.getElementById("input-page-size");
 const inputCategory = document.getElementById("input-category");
@@ -22,6 +22,7 @@ settingBtn.addEventListener("click", () => {
     validate = false;
   }
   if (validate) {
+    settingArr = [];
     settingArr.push(settingData);
     saveToStorage(KEY, JSON.stringify(settingArr));
     window.location.href = "../pages/news.html";
