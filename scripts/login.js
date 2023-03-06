@@ -1,6 +1,8 @@
 "use strict";
-const KEY = "USER_ARRAY";
-const loginArr = JSON.parse(getFromStorage(KEY)) || [];
+const keyRegisterUser = "USER_REGISTER";
+const userArr = JSON.parse(getFromStorage(keyRegisterUser)) || [];
+const keyLoginUser = "USER_LOGIN";
+const userLogin = JSON.parse(getFromStorage(keyLoginUser)) || [];
 const loginUsername = document.getElementById("input-username");
 const loginPassword = document.getElementById("input-password");
 const loginBtn = document.getElementById("btn-submit");
@@ -15,14 +17,19 @@ loginBtn.addEventListener("click", () => {
     alert("Please fill all fields");
     loginValidate = false;
   } else {
-    loginArr.forEach((arr) => {
+    for (let i = 0; i < userArr.length; i++) {
       if (
-        loginData.username != arr.username ||
-        loginData.password != arr.password
+        loginData.username != userArr[i].username ||
+        loginData.password != userArr[i].password
       ) {
         alert("Username or password is not corrected");
         loginValidate = false;
+      } else {
+        alert("Logged in successful !");
+
+        userLogin.push(userArr[i]);
+        saveToStorage(keyLoginUser, JSON.stringify(userLogin));
       }
-    });
+    }
   }
 });

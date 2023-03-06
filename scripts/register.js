@@ -8,8 +8,8 @@ class User {
   }
 }
 
-const KEY = "USER_REGISTER";
-const userArr = JSON.parse(getFromStorage(KEY)) || [];
+const keyRegisterUser = "USER_REGISTER";
+const userArr = JSON.parse(getFromStorage(keyRegisterUser)) || [];
 
 const inputFirstName = document.getElementById("input-firstname");
 const inputLastName = document.getElementById("input-lastname");
@@ -62,7 +62,7 @@ submitBtn.addEventListener("click", () => {
     );
     const data = parseUsers(user);
     userArr.push(data);
-    saveToStorage(KEY, JSON.stringify(userArr));
+    saveToStorage(keyRegisterUser, JSON.stringify(userArr));
     window.location.href = "../pages/login.html";
   }
 });
