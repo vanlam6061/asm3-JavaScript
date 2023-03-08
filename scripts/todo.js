@@ -1,7 +1,7 @@
 "use strict";
 // touch DOM element
 const addBtn = document.getElementById("btn-add");
-const inputTask = document.getElementById("input-task");
+const todoTask = document.getElementById("input-task");
 const deleteBtn = document.getElementById("btn-delete");
 const dodoItem = document.getElementById("toggle-dodo");
 const todoContainer = document.getElementById("todo-list");
@@ -26,7 +26,7 @@ const loginUser = JSON.parse(getFromStorage(keyLoginUser)) || [];
 
 addBtn.addEventListener("click", () => {
   const todoData = {
-    task: inputTask.value,
+    task: todoTask.value,
     owner: loginUser.username,
     isDone: true,
   };
@@ -42,14 +42,33 @@ addBtn.addEventListener("click", () => {
     renderData();
   }
 });
+function clearInput() {
+  taskInput.value = "";
+}
 
 const renderData = function () {
   let html = "";
   todoArr.map((todo) => {
     html += `
-    <li>${todo.task}<span class="close" id ="btn-delete" >×</span></li>`;
+    <li>${todo.task}<span class="close" onclick=deleteTask(${todo.task},${todo.owner})>×</span></li>`;
   });
   todoContainer.innerHTML = html;
+  todoTask.innerHTML = "";
+};
+//delete todo tasks
+const deleteTask = function (task, owner) {
+  todoArr.forEach((arr, i) => {
+    if (task == arr.task && owner == arr.owner) {
+      const confirmDelete = confirm(
+        " are you sure you want to delete this task !"
+      );
+      if (confirmDelete) {
+        todoArr.splice(i, 1);
+        saveToStorage(KEY_TODO, JSON.stringify(todoArr));
+        renderData();
+      }
+    }
+  });
 };
 
 // function parseUser(todoData) {

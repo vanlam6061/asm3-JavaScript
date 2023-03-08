@@ -1,5 +1,5 @@
 "use strict";
-const keyRegisterUser = "USER_REGISTER";
+const keyRegisterUser = "USER";
 const userArr = JSON.parse(getFromStorage(keyRegisterUser)) || [];
 const keyLoginUser = "USER_LOGIN";
 const userLogin = JSON.parse(getFromStorage(keyLoginUser)) || [];

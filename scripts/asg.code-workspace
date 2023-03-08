@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": "../../asg"
+	},
+	{
+		"path": ".."
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "asm3"
+  }
+}

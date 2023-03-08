@@ -8,7 +8,7 @@ class User {
   }
 }
 
-const keyRegisterUser = "USER_REGISTER";
+const keyRegisterUser = "USER";
 const userArr = JSON.parse(getFromStorage(keyRegisterUser)) || [];
 
 const inputFirstName = document.getElementById("input-firstname");
