@@ -2,7 +2,7 @@
 //get dar
 const KEY_USER = "USER-ARRAY";
 const userArr = JSON.parse(getFromStorage(KEY_USER)) || [];
-const KEY_LOGIN = "USER_LOGIN";
+const KEY_LOGIN = "USER-LOGIN";
 let userLogin = JSON.parse(getFromStorage(KEY_LOGIN)) || [];
 
 //DOM objects
