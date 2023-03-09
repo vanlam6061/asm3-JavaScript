@@ -1,25 +1,29 @@
 "use strict";
-const keyRegisterUser = "USER";
-const userArr = JSON.parse(getFromStorage(keyRegisterUser)) || [];
-const keyLoginUser = "USER_LOGIN";
-const userLogin = JSON.parse(getFromStorage(keyLoginUser)) || [];
+//get dar
+const KEY_USER = "USER-ARRAY";
+const userArr = JSON.parse(getFromStorage(KEY_USER)) || [];
+const KEY_LOGIN = "USER_LOGIN";
+let userLogin = JSON.parse(getFromStorage(KEY_LOGIN)) || [];
+
+//DOM objects
 const loginUsername = document.getElementById("input-username");
 const loginPassword = document.getElementById("input-password");
 const loginBtn = document.getElementById("btn-submit");
 
 loginBtn.addEventListener("click", () => {
+  userLogin = [];
   const loginData = {
-    username: loginUsername.value,
+    userName: loginUsername.value,
     password: loginPassword.value,
   };
   let loginValidate = true;
-  if (!loginData.username || !loginData.password) {
+  if (!loginData.userName || !loginData.password) {
     alert("Please fill all fields");
     loginValidate = false;
   } else {
     for (let i = 0; i < userArr.length; i++) {
       if (
-        loginData.username != userArr[i].username ||
+        loginData.userName != userArr[i].userName ||
         loginData.password != userArr[i].password
       ) {
         alert("Username or password is not corrected");
@@ -28,7 +32,8 @@ loginBtn.addEventListener("click", () => {
         alert("Logged in successful !");
 
         userLogin.push(userArr[i]);
-        saveToStorage(keyLoginUser, JSON.stringify(userLogin));
+        saveToStorage(KEY_LOGIN, JSON.stringify(userLogin));
+        window.location.href = "../pages/news.html";
       }
     }
   }

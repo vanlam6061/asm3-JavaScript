@@ -1,77 +1,73 @@
 "use strict";
+//
+const KEY_USERS = "USER-ARRAY";
+const userArr = JSON.parse(getFromStorage(KEY_USERS)) || [];
+
 class User {
-  constructor(firstName, lastName, username, password) {
+  constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.username = username;
+    this.userName = userName;
     this.password = password;
   }
 }
-
-const keyRegisterUser = "USER";
-const userArr = JSON.parse(getFromStorage(keyRegisterUser)) || [];
-
+//DOM Object
 const inputFirstName = document.getElementById("input-firstname");
 const inputLastName = document.getElementById("input-lastname");
 const inputUserName = document.getElementById("input-username");
 const inputPassword = document.getElementById("input-password");
 const inputPasswordConfirm = document.getElementById("input-password-confirm");
 const submitBtn = document.getElementById("btn-submit");
+//Submit button
 submitBtn.addEventListener("click", () => {
-  const data = {
-    firstName: inputFirstNames.value,
-    lastName: inputLastNames.value,
-    username: inputUsername.value,
+  const dataUser = {
+    firstName: inputFirstName.value,
+    lastName: inputLastName.value,
+    userName: inputUserName.value,
     password: inputPassword.value,
     confirm: inputPasswordConfirm.value,
   };
   let validate = true;
   if (
-    !data.firstName ||
-    !data.lastName ||
-    !data.username ||
-    !data.password ||
-    !data.confirm
+    !dataUser.firstName ||
+    !dataUser.lastName ||
+    !dataUser.userName ||
+    !dataUser.password ||
+    !dataUser.confirm
   ) {
     alert("Please fill all fields");
     validate = false;
   } else {
-    for (let i = 0; i < useArr.length; i++) {
-      if (data.username == useArr[i].username) {
+    for (let i = 0; i < userArr.length; i++) {
+      if (dataUser.userName == userArr[i].userName) {
         alert("Username must unique!");
         validate = false;
       }
     }
-    if (!data.password.match(/[a-zA-Z0-9]{8,}/)) {
+    if (!dataUser.password.match(/[a-zA-Z0-9]{8,}/)) {
       alert("Password must be at least 8 characters long");
       validate = false;
     }
-    if (data.password != data.confirm) {
+
+    if (dataUser.password != dataUser.confirm) {
       alert("Password and confirm password do not match");
       validate = false;
     }
   }
+
   if (validate) {
-    let user = new User(
-      data.firstName,
-      data.lastName,
-      data.email,
-      data.password,
-      data.password,
-      data.confirm
-    );
-    const data = parseUsers(user);
-    userArr.push(data);
-    saveToStorage(keyRegisterUser, JSON.stringify(userArr));
+    const userObject = parseUser(dataUser);
+    userArr.push(userObject);
+    saveToStorage(KEY_USERS, JSON.stringify(userArr));
     window.location.href = "../pages/login.html";
   }
 });
-function parseUser(userData) {
+function parseUser(dataUser) {
   const user = new User(
-    userData.firstName,
-    userData.lastName,
-    userData.userName,
-    userData.password
+    dataUser.firstName,
+    dataUser.lastName,
+    dataUser.userName,
+    dataUser.password
   );
 
   return user;
