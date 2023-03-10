@@ -86,3 +86,12 @@ const deleteTask = function (task, owner) {
     }
   }
 };
+// toggle todo
+todoContainer.addEventListener("click", function (event) {
+  for (let i = 0; i < todoArr.length; i++) {
+    if (event.target.tagName === "LI") {
+      ev.target.classList.toggle("checked");
+      todoArr[i].isDone = false;
+    }
+  }
+});
