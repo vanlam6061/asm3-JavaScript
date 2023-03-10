@@ -20,11 +20,16 @@ class Todo {
     this.isDone = isDone;
   }
 }
+
+function parseUser(todoData) {
+  const todo = new Todo(todoData.task, todoData.owner, todoData.isDone);
+  return todo;
+}
 const renderData = function () {
   let html = "";
   todoArr.map((todo) => {
     html += `
-    <li>${todo.task}<span class="close" onclick=deleteTask(${todo.task},${todo.owner})>×</span></li>`;
+    <li>${todo.task}<span class="close" onclick="deleteTask('${todo.task}','${todo.owner}')">×</span></li>`;
   });
   todoContainer.innerHTML = html;
   todoTask.innerHTML = "";
@@ -56,7 +61,7 @@ addBtn.addEventListener("click", () => {
     validate = false;
   }
   if (validate) {
-    let newTodo = new Todo(todoData.task, todoData.owner, todoData.isDone);
+    const newTodo = parseUser(todoData);
     todoArr.push(newTodo);
     saveToStorage(KEY_TODO, JSON.stringify(todoArr));
     renderData();
@@ -67,30 +72,17 @@ function clearInput() {
   todoTask.value = "";
 }
 console.log(todoArr);
+console.log(loginUser);
 //delete todo tasks
-const deleteTask = function () {
-  todoArr.forEach((number, index) => console.log(`${index}:${number}`));
-  // todoArr.forEach((arr, i) => {
-  //   if (task == arr.task && owner == loginUser.userName) {
-  //     const confirmDelete = confirm(
-  //       " are you sure you want to delete this task !"
-  //     );
-  //     if (confirmDelete) {
-  //       todoArr.splice(i, 1);
-  //       saveToStorage(KEY_TODO, JSON.stringify(todoArr));
-  //       renderData();
-  //     // }
-  //   }
-  // });
+const deleteTask = function (task, owner) {
+  const checkConfirm = confirm("Are you sure about that?");
+  for (let i = 0; i < todoArr.length; i++) {
+    if (todoArr[i].task == task && loginUser[0].userName == owner) {
+      if (checkConfirm) {
+        todoArr.splice(i, 1);
+        saveToStorage(KEY_TODO, JSON.stringify(todoArr));
+        renderData();
+      }
+    }
+  }
 };
-
-// function parseUser(todoData) {
-//   const user = new Todo(
-//     todoData.firstName,
-//     todoData.lastName,
-//     todoData.userName,
-//     todoData.password
-//   );
-
-//   return user;
-// }
