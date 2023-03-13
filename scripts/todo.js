@@ -29,7 +29,11 @@ const renderData = function () {
   let html = "";
   todoArr.map((todo) => {
     html += `
-    <li>${todo.task}<span class="close" onclick="deleteTask('${todo.task}','${todo.owner}')">×</span></li>`;
+    <li onclick ="toggleTask('${todoArr.indexOf(todo)}')">${
+      todo.task
+    }<span class="close" onclick="deleteTask('${todo.task}','${
+      todo.owner
+    }')">×</span></li>`;
   });
   todoContainer.innerHTML = html;
   todoTask.innerHTML = "";
@@ -87,11 +91,17 @@ const deleteTask = function (task, owner) {
   }
 };
 // toggle todo
-todoContainer.addEventListener("click", function (event) {
-  for (let i = 0; i < todoArr.length; i++) {
-    if (event.target.tagName === "LI") {
-      ev.target.classList.toggle("checked");
-      todoArr[i].isDone = false;
-    }
-  }
-});
+
+function toggleTask(indexOfTask) {
+  let i = todoArr.findIndex((id) => id == indexOfTask);
+  todoArr[i].isDone = false;
+}
+
+// todoContainer.addEventListener("click", function (event) {
+//   for (let i = 0; i < todoArr.length; i++) {
+//     if (event.target.tagName === "LI") {
+//       event.target.classList.toggle("checked");
+//       todoArr[i].isDone = false;
+//     }
+//   }
+// });
