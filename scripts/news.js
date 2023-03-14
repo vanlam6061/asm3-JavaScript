@@ -85,7 +85,11 @@ function paginatedVisual(previousBtn, nextBtn, maxPage) {
 }
 //default pages
 let currentPage = 1;
-news("us", settingUser[0].category, settingUser[0].pageSize, currentPage);
+if (settingUser.length == 0) {
+  news("us", "general", 5, currentPage);
+} else {
+  news("us", settingUser[0].category, settingUser[0].pageSize, currentPage);
+}
 // Next button
 nextBtn.addEventListener("click", () => {
   if (currentPage < maxPage) {

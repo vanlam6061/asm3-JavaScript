@@ -24,7 +24,8 @@ loginBtn.addEventListener("click", () => {
     for (let i = 0; i < userArr.length; i++) {
       if (
         loginData.userName != userArr[i].userName ||
-        loginData.password != userArr[i].password
+        loginData.password != userArr[i].password ||
+        userArr == []
       ) {
         alert("Username or password is not corrected");
         loginValidate = false;
